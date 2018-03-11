@@ -1,0 +1,5 @@
+*.pyc
+project/Include/*
+project/Lib/*
+project/Scripts/*
+project/tcl/*
