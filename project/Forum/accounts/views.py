@@ -2,7 +2,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.http import HttpResponse
-from .forms import UserBasicForm, UserAdditionalForm
+from .forms import UserBasicForm, UserInfoForm
+from .models import UserProfile
 
 
 def profile(request):
@@ -37,6 +38,8 @@ def user_register(request):
 
     #UserCreationForm(modified into UserBasicForm) does the password checking and other additionals for us
     form = UserBasicForm(request.POST or None)
+    forminfo = UserInfoForm(request.POST or None)
+
 
     if form.is_valid():
         user = form.save(commit=False)
@@ -48,7 +51,7 @@ def user_register(request):
         if user is not None:
         	if user.is_active:
         		login(request, user)
-        		return render(request, 'accounts/user_additional.html')
+        		return render(request, 'accounts/add_info.html', {'form': forminfo})
         	else:
         		return render(request, 'accounts/register.html', {'error_message': 'The user is no longer active.'})
     return render(request, 'accounts/register.html', {'form': form})
@@ -59,13 +62,30 @@ def user_logout(request):
     return render(request, 'accounts/login.html')
 
 
-def user_additional(request):
-    form = UserAdditionalForm(request.POST or None)
+def add_info(request):
+    form = UserInfoForm(request.POST or None, request.FILES or None)
 
     if form.is_valid():
-        user = form.save(commit=False)
-        user.user = request.user
-        user.save()
+        info = form.save(commit=False)
+        info.user = request.user
+        info.save()
         return render(request, 'accounts/profile.html', {'user': request.user})
 
-    return render(request, 'accounts/user_additional.html', {'form': form})
+    return render(request, 'accounts/add_info.html', {'form': form})
+
+
+def edit_info(request):
+
+    if request.method == "POST":
+        form = UserInfoForm(request.POST or None, request.FILES or None, instance=request.user.userprofile)
+
+        if form.is_valid():
+            info = form.save(commit=False)
+            info.user = request.user
+            info.website = form.cleaned_data['website']
+            info.bio = form.cleaned_data['bio']
+            info.save()
+            return render(request, 'accounts/profile.html', {'user': request.user})
+    else:
+        form = UserInfoForm(instance=request.user.userprofile)
+        return render(request, 'accounts/add_info.html', {'form': form})

@@ -1,0 +1,20 @@
+{% extends 'accounts/base.html' %}
+{% block title %}Details{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+        <h1 class="text-center">{{ post.title }}</h1><br>
+        {% if post.photo %}
+            <img src="{{ post.photo.url }}" width="300" height="300">
+        {% endif %}
+        <h3>{{ post.content }}</h3><br>
+
+        {% if request.user == post.user or user.is_superuser %}
+            <a href="{% url 'home:post-edit' post.id %}" class="btn btn-md btn-primary">Edit Post</a>
+            <a href="{% url 'home:post-delete' post.id %}" class="btn btn-sm btn-danger">Delete post</a>
+        {% endif %}
+
+    </div>
+
+{% endblock %}
