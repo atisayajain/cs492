@@ -3,7 +3,29 @@
 {% block homestatus %}active{% endblock %}
 
 {% block body %}
+    <div class="container">
 
-	<h1>Working!</h1>
+        <div class="row">
+            <div class="col-sm-10" style="border-right: 1px solid gray;">
+                {% if posts %}
+                <h1 class="text-center">Posts</h1>
+                <ul>
+                    {% for post in posts %}
+                        <li>
+                            {{ post.user.username }}<br>
+                            {{ post.title }} | <small>{{ post.time_now|timesince }} ago</small><br><br>
+                            <a href="{% url 'home:details' post.id %}">Show details</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                    <h1>You have no posts</h1>
+                {% endif %}
+            </div>
+            <div class="col-sm-2">
+                <a href="{% url 'home:post-add' %}" class="btn btn-md btn-primary" style="margin: 40px 0px 0px 30px;">Add post</a>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

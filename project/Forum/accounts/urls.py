@@ -11,8 +11,11 @@ urlpatterns = [
 	# accounts/register
 	url(r'^register$', views.user_register, name='register'),
 
-	# accounts/register_additional
-	url(r'register/additional$', views.user_additional, name='register-additional'),
+	# accounts/addinfo
+	url(r'^add_info$', views.add_info, name='add-info'),
+
+	# accounts/editinfo
+	url(r'^edit_info$', views.edit_info, name='edit-info'),
 
 	# accounts/profile
 	url(r'^profile$', views.profile, name='profile'),

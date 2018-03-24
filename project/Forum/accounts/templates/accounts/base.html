@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <title>{% block title %}{% endblock %}</title>
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
     {% load staticfiles %}
 
-    
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <link href="https://fonts.googleapis.com/css?family=Vollkorn+SC" rel="stylesheet">
 
 </head>
 <body>
@@ -45,7 +43,7 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li class="{% block homestatus %}{% endblock %}">
-                        	<a href="{% url 'home:index' %}">Home</a>
+                            <a href="{% url 'home:index' %}">Home</a>
                         </li>
                         <li class="{% block profilestatus %}{% endblock %}">
                             <a href="{% url 'accounts:profile' %}">Profile</a>
@@ -57,7 +55,7 @@
                         </li>
                     </ul>
 
-                </div>
+                </div> 
             </div>
 
         </div>

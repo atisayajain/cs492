@@ -12,10 +12,8 @@ class UserBasicForm(UserCreationForm):
 		fields = ['username', 'email', 'first_name', 'last_name']
 
 
-class UserAdditionalForm(forms.ModelForm):
+class UserInfoForm(forms.ModelForm):
 
 	class Meta:
 		model = UserProfile
-		fields = ['website', 'bio']
-
-
+		fields = ['website', 'bio', 'profile_picture']
