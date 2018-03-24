@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.http import HttpResponse
-from .forms import UserBasicForm
+from .forms import UserBasicForm, UserAdditionalForm
 
 
 def profile(request):
@@ -48,7 +48,7 @@ def user_register(request):
         if user is not None:
         	if user.is_active:
         		login(request, user)
-        		return render(request, 'accounts/profile.html')
+        		return render(request, 'accounts/user_additional.html')
         	else:
         		return render(request, 'accounts/register.html', {'error_message': 'The user is no longer active.'})
     return render(request, 'accounts/register.html', {'form': form})
@@ -59,3 +59,13 @@ def user_logout(request):
     return render(request, 'accounts/login.html')
 
 
+def user_additional(request):
+    form = UserAdditionalForm(request.POST or None)
+
+    if form.is_valid():
+        user = form.save(commit=False)
+        user.user = request.user
+        user.save()
+        return render(request, 'accounts/profile.html', {'user': request.user})
+
+    return render(request, 'accounts/user_additional.html', {'form': form})
