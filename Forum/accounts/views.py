@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -6,11 +7,11 @@ from .forms import UserBasicForm, UserInfoForm
 from .models import UserProfile
 
 
-def profile(request):
+def profile(request, user_id):
 
     # Login required
     if request.user.is_authenticated:
-        return render(request, 'accounts/profile.html', {'user': request.user})
+        return render(request, 'accounts/profile.html', {'user': User.objects.get(pk=user_id)})
     else:
         return render(request, 'accounts/login.html')
 

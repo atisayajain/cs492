@@ -17,8 +17,8 @@ urlpatterns = [
 	# accounts/editinfo
 	url(r'^edit_info$', views.edit_info, name='edit-info'),
 
-	# accounts/profile
-	url(r'^profile$', views.profile, name='profile'),
+	# accounts/profile/3/
+	url(r'^profile/(?P<user_id>[0-9]+)/$', views.profile, name='profile'),
 
 	# accounts/logout
 	url(r'^logout$', views.user_logout, name='logout'),

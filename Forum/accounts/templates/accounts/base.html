@@ -34,7 +34,7 @@
                 <div class="collapse navbar-collapse" id="topNavBar">
 
                     <!-- Search -->
-                    <form class="navbar-form navbar-left" role="search" method="get" action="">
+                    <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'home:search' %}">
                         <div class="form-group">
                             <input class="form-control" name="q" value="{{ request.GET.q }}" type="text" placeholder="Search" aria-label="Search">
                         </div>
@@ -46,7 +46,7 @@
                             <a href="{% url 'home:index' %}">Home</a>
                         </li>
                         <li class="{% block profilestatus %}{% endblock %}">
-                            <a href="{% url 'accounts:profile' %}">Profile</a>
+                            <a href="{% url 'accounts:profile' user.id %}">Profile</a>
                         </li>
                         <li>
                             <a href="{% url 'accounts:logout' %}">
