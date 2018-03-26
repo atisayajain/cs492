@@ -1,3 +1,1 @@
-# [SOFTWARE TOOLS PROJECT (CS 492)]
-
-## Repository for SOFTWWARE TOOLS PROJECT (CS 492).
+## Repository for CS492 Software Tools Project
