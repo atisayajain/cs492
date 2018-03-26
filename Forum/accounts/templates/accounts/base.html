@@ -45,9 +45,11 @@
                         <li class="{% block homestatus %}{% endblock %}">
                             <a href="{% url 'home:index' %}">Home</a>
                         </li>
+                        {% if user.is_authenticated %}
                         <li class="{% block profilestatus %}{% endblock %}">
                             <a href="{% url 'accounts:profile' user.id %}">Profile</a>
                         </li>
+                        {% endif %}
                         <li>
                             <a href="{% url 'accounts:logout' %}">
                                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout

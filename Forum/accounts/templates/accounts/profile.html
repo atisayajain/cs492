@@ -17,6 +17,8 @@ Logged in as : {{ user.username }}
 <hr>
 {{ user.userprofile.bio }}
 <hr>
-<a href="{% url 'accounts:edit-info' %}">Edit info</a>
+{% if request.user == post.user or user.is_superuser %}
+	<a href="{% url 'accounts:edit-info' %}">Edit info</a>
+{% endif %}
 
 {% endblock %}

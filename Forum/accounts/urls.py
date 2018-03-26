@@ -6,7 +6,7 @@ app_name = 'accounts'
 urlpatterns = [
 	
 	# accounts/
-	url(r'^$', views.user_login, name='login'),
+	url(r'^login/$', views.user_login, name='login'),
 
 	# accounts/register
 	url(r'^register$', views.user_register, name='register'),

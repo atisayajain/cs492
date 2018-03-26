@@ -11,7 +11,10 @@ def profile(request, user_id):
 
     # Login required
     if request.user.is_authenticated:
-        return render(request, 'accounts/profile.html', {'user': User.objects.get(pk=user_id)})
+        if user_id:
+            return render(request, 'accounts/profile.html', {'user': User.objects.get(pk=user_id)})
+        else:
+            return render(request, 'accounts/profile.html', {'user': request.user})
     else:
         return render(request, 'accounts/login.html')
 
