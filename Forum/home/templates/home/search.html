@@ -1,0 +1,43 @@
+{% extends 'accounts/base.html' %}
+{% block title %}Search{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+        <!-- Search matches with Albums -->
+
+        {% if posts %}
+
+            <h1 class="text-center">Post matches</h1>
+            <ul>
+                {% for post in posts %}
+                    <li>
+                        {{ post.user.username }}<br>
+                        {{ post.title }} | <small>{{ post.time_now|timesince }} ago</small><br><br>
+                        <a href="{% url 'home:details' post.id %}">Show details</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h1>You have no posts</h1>
+        {% endif %}
+
+        {% if users %}
+
+            <h1 class="text-center">User matches</h1>
+            <ul>
+                {% for user in users %}
+                    <li>
+                        {{ user.username }}<br>
+                        <a href="{% url 'accounts:profile' user.id %}">Show details</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <h1>You have no users</h1>
+        {% endif %}
+        
+
+    </div>
+{% endblock %}
