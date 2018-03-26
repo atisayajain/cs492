@@ -6,9 +6,11 @@
 
         <h1 class="text-center">{{ post.title }}</h1><br>
         {% if post.photo %}
-            <img src="{{ post.photo.url }}" width="300" height="300">
+            <embed src="{{ post.photo.url }}" width="600" height="600">
         {% endif %}
         <h3>{{ post.content }}</h3><br>
+
+        <hr>
 
         {% if request.user == post.user or user.is_superuser %}
             <a href="{% url 'home:post-edit' post.id %}" class="btn btn-md btn-primary">Edit Post</a>
