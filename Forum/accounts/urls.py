@@ -1,11 +1,15 @@
 from django.conf.urls import url
+from home.views import index
 from . import views
 
 app_name = 'accounts'
 
 urlpatterns = [
-	
+
 	# accounts/
+	url(r'^$', index),
+
+	# accounts/login/
 	url(r'^login/$', views.user_login, name='login'),
 
 	# accounts/register
