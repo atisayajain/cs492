@@ -1,12 +1,16 @@
 from django.conf.urls import url
+from home.views import index
 from . import views
 
 app_name = 'accounts'
 
 urlpatterns = [
-	
+
 	# accounts/
-	url(r'^$', views.user_login, name='login'),
+	url(r'^$', index),
+
+	# accounts/login/
+	url(r'^login/$', views.user_login, name='login'),
 
 	# accounts/register
 	url(r'^register$', views.user_register, name='register'),
@@ -17,8 +21,8 @@ urlpatterns = [
 	# accounts/editinfo
 	url(r'^edit_info$', views.edit_info, name='edit-info'),
 
-	# accounts/profile
-	url(r'^profile$', views.profile, name='profile'),
+	# accounts/profile/3/
+	url(r'^profile/(?P<user_id>[0-9]+)/$', views.profile, name='profile'),
 
 	# accounts/logout
 	url(r'^logout$', views.user_logout, name='logout'),
