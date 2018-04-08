@@ -12,6 +12,24 @@
 
         <hr>
 
+        {% if comments %}
+            <ul>
+                {% for comment in comments %}
+                    <li>
+                        {{ comment.user.username}} <small>{{ comment.timestamp|timesince }} ago</small><br>
+                        {{ comment.body }}
+                        {% if request.user == comment.user or user.is_superuser %}
+                            <a href="{% url 'home:delete-comment' post.id comment.id %}" class="btn btn-sm btn-danger">Delete comment</a>
+                        {% endif %}
+                        <hr>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <a href="{% url 'home:add-comment' post.id %}" class="btn btn-sm btn-default">Add comment</a><br><br><br>
+
+
         {% if request.user == post.user or user.is_superuser %}
             <a href="{% url 'home:post-edit' post.id %}" class="btn btn-md btn-primary">Edit Post</a>
             <a href="{% url 'home:post-delete' post.id %}" class="btn btn-sm btn-danger">Delete post</a>

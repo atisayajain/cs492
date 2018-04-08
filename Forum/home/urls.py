@@ -20,6 +20,12 @@ urlpatterns = [
 	# home/post/74/delete_post/
 	url(r'^post/(?P<post_id>[0-9]+)/delete_post/', views.delete_post, name='post-delete'),
 
+	# home/post/74/add_comment/
+	url(r'^post/(?P<post_id>[0-9]+)/add_comment/', views.add_comment, name='add-comment'),
+
+	# home/post/74/delete_comment/23/
+	url(r'^post/(?P<post_id>[0-9]+)/delete_comment/(?P<comment_id>[0-9]+)/$', views.delete_comment, name='delete-comment'),
+
 	# home/search/
 	url(r'^search$', views.search, name='search'),
 
