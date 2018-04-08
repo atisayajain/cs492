@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -6,11 +7,14 @@ from .forms import UserBasicForm, UserInfoForm
 from .models import UserProfile
 
 
-def profile(request):
+def profile(request, user_id):
 
     # Login required
     if request.user.is_authenticated:
-        return render(request, 'accounts/profile.html', {'user': request.user})
+        if user_id:
+            return render(request, 'accounts/profile.html', {'user': User.objects.get(pk=user_id)})
+        else:
+            return render(request, 'accounts/profile.html', {'user': request.user})
     else:
         return render(request, 'accounts/login.html')
 
@@ -18,21 +22,21 @@ def profile(request):
 def user_login(request):
 
     # Login required
-	if not request.user.is_authenticated:
-		if request.method == "POST":
-			username = request.POST['username']
-			password = request.POST['password']
-			user = authenticate(username=username, password=password)
+    if not request.user.is_authenticated:
+        if request.method == "POST":
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
 
             #If user is not banned
-			if user is not None:
-				if user.is_active:
-					login(request, user)
-					return render(request, 'accounts/profile.html')
-				else:
-					return render(request, 'accounts/register.html', {'error_message': 'The user is no longer active'})
-		return render(request, 'accounts/login.html')
-	return render(request, 'accounts/profile.html')
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return render(request, 'accounts/profile.html')
+                else:
+                    return render(request, 'accounts/register.html', {'error_message': 'The user is no longer active'})
+        return render(request, 'accounts/login.html')
+    return render(request, 'accounts/profile.html')
 
 def user_register(request):
 
@@ -49,11 +53,11 @@ def user_register(request):
         user.save()
         user = authenticate(username=username, password=password)
         if user is not None:
-        	if user.is_active:
-        		login(request, user)
-        		return render(request, 'accounts/add_info.html', {'form': forminfo})
-        	else:
-        		return render(request, 'accounts/register.html', {'error_message': 'The user is no longer active.'})
+            if user.is_active:
+                login(request, user)
+                return render(request, 'accounts/add_info.html', {'form': forminfo})
+            else:
+                return render(request, 'accounts/register.html', {'error_message': 'The user is no longer active.'})
     return render(request, 'accounts/register.html', {'form': form})
 
 
