@@ -4,22 +4,23 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import mimetypes
 from django.db.models import Q
-from .models import Post
-from .forms import PostForm
+from .models import Post, Comment
+from .forms import PostForm, CommentForm
 
 
 def index(request):
-    posts = Post.objects.all()
-    # Login Required
-    if request.user.is_authenticated:
-        return render(request, 'home/index.html', {'posts': posts})
-    else:
-        return render(request, 'accounts/login.html')
+	posts = Post.objects.all()
+	# Login Required
+	if request.user.is_authenticated:
+		return render(request, 'home/index.html', {'posts': posts, 'users': User.objects.all()})
+	else:
+		return render(request, 'accounts/login.html')
 
 
 def details(request, post_id):
     post = Post.objects.get(pk=post_id)
-    return render(request, 'home/details.html', {'post': post})
+    comments = Comment.objects.filter(post=post)
+    return render(request, 'home/details.html', {'post': post, 'comments': comments})
 
 
 def create_post(request):
@@ -63,6 +64,34 @@ def delete_post(request, post_id):
     post.delete()
     posts = Post.objects.all()
     return render(request, 'home/index.html', {'posts': posts})
+
+
+def add_comment(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST or None)
+        if form.is_valid:
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.post = post
+            comment.save()
+            comments = Comment.objects.filter(post=post)
+            return render(request, 'home/details.html', {'post': post, 'comments': comments})
+    else:
+        form = CommentForm()
+    return render(request, 'home/comment_form.html', {'form': form})
+
+
+def delete_comment(request, post_id, comment_id):
+    post = Post.objects.get(pk=post_id)
+    comment = Comment.objects.get(pk=comment_id)
+    comment.delete()
+    context = {
+        'post': post,
+        'comments': Comment.objects.filter(post=post),
+    }
+    return render(request, 'home/details.html', context)
 
 
 def search(request):

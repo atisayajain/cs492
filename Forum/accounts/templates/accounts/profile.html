@@ -7,7 +7,7 @@
 
 {% block body %}
 
-Logged in as : {{ user.username }}
+{% if user == request.user %}Logged in as : {% endif %}{{ user.username }}
 
 {% if user.userprofile.profile_picture %}
 	<img src="{{ user.userprofile.profile_picture.url }}" width="200" height="200">
@@ -17,7 +17,7 @@ Logged in as : {{ user.username }}
 <hr>
 {{ user.userprofile.bio }}
 <hr>
-{% if request.user == post.user or user.is_superuser %}
+{% if user == request.user %}
 	<a href="{% url 'accounts:edit-info' %}">Edit info</a>
 {% endif %}
 

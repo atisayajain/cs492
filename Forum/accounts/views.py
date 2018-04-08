@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -12,7 +14,7 @@ def profile(request, user_id):
     # Login required
     if request.user.is_authenticated:
         if user_id:
-            return render(request, 'accounts/profile.html', {'user': User.objects.get(pk=user_id)})
+            return render(request, 'accounts/profile.html', {'user': User.objects.get(pk=user_id), 'user_now': request.user})
         else:
             return render(request, 'accounts/profile.html', {'user': request.user})
     else:
@@ -22,21 +24,21 @@ def profile(request, user_id):
 def user_login(request):
 
     # Login required
-    if not request.user.is_authenticated:
-        if request.method == "POST":
-            username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(username=username, password=password)
+	if not request.user.is_authenticated:
+		if request.method == "POST":
+			username = request.POST['username']
+			password = request.POST['password']
+			user = authenticate(username=username, password=password)
 
             #If user is not banned
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return render(request, 'accounts/profile.html')
-                else:
-                    return render(request, 'accounts/register.html', {'error_message': 'The user is no longer active'})
-        return render(request, 'accounts/login.html')
-    return render(request, 'accounts/profile.html')
+			if user is not None:
+				if user.is_active:
+					login(request, user)
+					return render(request, 'accounts/profile.html')
+				else:
+					return render(request, 'accounts/register.html', {'error_message': 'The user is no longer active'})
+		return render(request, 'accounts/login.html')
+	return render(request, 'accounts/profile.html')
 
 def user_register(request):
 
@@ -49,15 +51,24 @@ def user_register(request):
         user = form.save(commit=False)
         username = form.cleaned_data['username']
         password = form.cleaned_data['password1']   #password1 and password2(confirm_password) are the two variables in UserCreationForm 
+        email = form.cleaned_data['email']
         user.set_password(password)
         user.save()
+        
+        # Send Email notification
+        subject = "Thank you for joining the College Forum"
+        from_email = settings.EMAIL_HOST_USER
+        to_email = [email]
+        singup_message = """Welcome to RCCIIT College Forum."""
+        send_mail(subject=subject, from_email=from_email, recipient_list=to_email, message=singup_message, fail_silently=False)
+
         user = authenticate(username=username, password=password)
         if user is not None:
-            if user.is_active:
-                login(request, user)
-                return render(request, 'accounts/add_info.html', {'form': forminfo})
-            else:
-                return render(request, 'accounts/register.html', {'error_message': 'The user is no longer active.'})
+        	if user.is_active:
+        		login(request, user)
+        		return render(request, 'accounts/add_info.html', {'form': forminfo})
+        	else:
+        		return render(request, 'accounts/register.html', {'error_message': 'The user is no longer active.'})
     return render(request, 'accounts/register.html', {'form': form})
 
 
