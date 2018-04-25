@@ -7,6 +7,11 @@ from django.db.models import Q
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
 
+ROLE_CHOICES = (
+    ('Year', 'YEAR'),
+    ('Department', 'DEPARTMENT'),
+    ('All', 'ALL')
+)
 
 def index(request):
 	posts = Post.objects.all()
