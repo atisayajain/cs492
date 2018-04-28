@@ -13,13 +13,15 @@ DEPARTMENT_CHOICES = (
 		('AEIE', 'AEIE'),
 	)
 
+
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
-	website = models.URLField(blank=True)
-	bio = models.TextField(blank=True)
+	roll = models.CharField(max_length=11, default='RollYearNNN')
 	profile_picture = models.ImageField(upload_to='profile_picture', blank=True)
-	role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='student')
+	role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Student')
 	dept = models.CharField(max_length=5, choices=DEPARTMENT_CHOICES, default='CSE')
+	year = models.CharField(max_length=4, default='2018')
 	
+
 	def __str__(self):
 		return self.user.username

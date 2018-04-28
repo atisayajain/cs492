@@ -7,19 +7,22 @@ from django.db.models import Q
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
 
-ROLE_CHOICES = (
-    ('Year', 'YEAR'),
-    ('Department', 'DEPARTMENT'),
-    ('All', 'ALL')
-)
 
 def index(request):
-	posts = Post.objects.all()
+    if request.user.is_superuser:
+        posts = Post.objects.all()
+        return render(request, 'home/index.html', {'posts': posts, 'users': User.objects.all()})
+    else:
+        posts_all = Post.objects.filter(dept='all')
+        posts_all = posts_all.filter(year='all')
+        posts = Post.objects.filter(dept=request.user.userprofile.dept)
+        posts = posts.filter(year=request.user.userprofile.year)
+
 	# Login Required
-	if request.user.is_authenticated:
-		return render(request, 'home/index.html', {'posts': posts, 'users': User.objects.all()})
-	else:
-		return render(request, 'accounts/login.html')
+    if request.user.is_authenticated:
+        return render(request, 'home/index.html', {'posts_all': posts_all, 'posts': posts, 'users': User.objects.all()})
+    else:
+        return render(request, 'accounts/login.html')
 
 
 def details(request, post_id):

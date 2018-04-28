@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -115,6 +116,14 @@ USE_L10N = True
 
 USE_TZ = True
 
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
@@ -129,8 +138,8 @@ STATIC_URL = '/static/'
 
 if DEBUG:
     MEDIA_URL = '/media/'
-    STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static", "static-only")
-    MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static", "media")
+    STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_files", "static-only")
+    MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_files", "media")
     STATICFILES_DIRS = (
-    os.path.join(os.path.dirname(BASE_DIR), "static", "static"),
+    os.path.join(os.path.dirname(BASE_DIR), "static_files", "static"),
     )

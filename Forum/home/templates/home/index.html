@@ -12,15 +12,24 @@
                 <ul>
                     {% for post in posts %}
                         <li>
-                            {{ post.user.username }}<br>
-                            {{ post.title }} | <small>{{ post.time_now | timesince }} ago
-                            | {{ post.user.userprofile.dept }}</small><br>
-                            <br><a href="{% url 'home:details' post.id %}">Show details</a>
+                            {{ post.user.username }} | {{ post.user.userprofile.dept }}<br>
+                            {{ post.title }} | <small>{{ post.time_now|timesince }} ago</small><br><br>
+                            <a href="{% url 'home:details' post.id %}">Show details</a>
                         </li>
                     {% endfor %}
                 </ul>
-                {% else %}
-                    <h1>You have no posts</h1>
+                {% endif %}
+                {% if posts_all %}
+                <h1 class="text-center">Posts for all</h1>
+                <ul>
+                    {% for post_all in posts_all %}
+                        <li>
+                            {{ post_all.user.username }} | {{ post_all.user.userprofile.dept }}<br>
+                            {{ post_all.title }} | <small>{{ post_all.time_now|timesince }} ago</small><br><br>
+                            <a href="{% url 'home:details' post_all.id %}">Show details</a>
+                        </li>
+                    {% endfor %}
+                </ul>
                 {% endif %}
             </div>
             <div class="col-sm-2">

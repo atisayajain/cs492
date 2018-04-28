@@ -13,9 +13,13 @@
 	<img src="{{ user.userprofile.profile_picture.url }}" width="200" height="200">
 {% endif %}
 <hr>
-{{ user.userprofile.website }}
-<hr>
-{{ user.userprofile.bio }}
+Name : {{ user.first_name }} {{ user.last_name }}<br>
+Role : {{ user.userprofile.role }}<br>
+Stream : {{ user.userprofile.dept }}<br>
+Roll : {{ user.userprofile.roll }}<br>
+{% if user.userprofile.year %}
+	Year : {{ user.userprofile.year }}
+{% endif %}
 <hr>
 {% if user == request.user %}
 	<a href="{% url 'accounts:edit-info' %}">Edit info</a>
