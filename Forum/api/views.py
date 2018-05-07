@@ -22,6 +22,14 @@ class PostListView(generics.ListAPIView):
 		return Post.objects.all()
 
 
+class CommentListView(generics.ListAPIView):
+	lookup_field = 'pk'
+	serializer_class = CommentSerializer
+
+	def get_queryset(self):
+		return Comment.objects.all()
+
+
 class CommentRudView(generics.RetrieveUpdateDestroyAPIView):
 	lookup_field = 'pk'
 	serializer_class = CommentSerializer
@@ -30,8 +38,16 @@ class CommentRudView(generics.RetrieveUpdateDestroyAPIView):
 		return Comment.objects.all()
 
 
+class ProfileListView(generics.ListAPIView):
+	lookup_field = 'user_id'
+	serializer_class = ProfileSerializer
+
+	def get_queryset(self):
+		return UserProfile.objects.all()
+
+
 class ProfileRudView(generics.RetrieveUpdateDestroyAPIView):
-	lookup_field = 'pk'
+	lookup_field = 'user_id'
 	serializer_class = ProfileSerializer
 
 	def get_queryset(self):

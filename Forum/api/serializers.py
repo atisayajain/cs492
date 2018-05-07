@@ -13,7 +13,7 @@ class PostSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Comment
-		fields = ['body', 'timestamp']
+		fields = ['user', 'body', 'timestamp']
 
 
 class ProfileSerializer(serializers.ModelSerializer):

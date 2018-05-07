@@ -6,9 +6,6 @@ app_name = 'accounts'
 
 urlpatterns = [
 
-	# accounts/
-	url(r'^$', index),
-
 	# accounts/login/
 	url(r'^login/$', views.user_login, name='login'),
 

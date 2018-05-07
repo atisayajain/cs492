@@ -13,7 +13,7 @@
             <ul>
                 {% for post in posts %}
                     <li>
-                        {{ post.user.username }}<br>
+                        {{ post.user.username }} | {{ post.user.userprofile.dept }}<br>
                         {{ post.title }} | <small>{{ post.time_now|timesince }} ago</small><br><br>
                         <a href="{% url 'home:details' post.id %}">Show details</a>
                     </li>
