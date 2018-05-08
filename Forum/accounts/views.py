@@ -14,8 +14,9 @@ def profile(request, user_id):
     # Login required
     if request.user.is_authenticated:
         if user_id:
-            return render(request, 'accounts/profile.html', {'user': User.objects.get(pk=user_id), 'user_now': request.user})
-        else:
+            user = User.objects.get(pk=user_id)
+            return render(request, 'accounts/profile.html', {'user': user, 'user_now': request.user})
+        else:    
             return render(request, 'accounts/profile.html', {'user': request.user})
     else:
         return render(request, 'accounts/login.html')
@@ -56,7 +57,7 @@ def user_register(request):
         user.save()
         
         # Send Email notification
-        subject = "Thank you for joining the College Forum"
+        subject = "Thank you for joining the College Forum, " + user.username
         from_email = settings.EMAIL_HOST_USER
         to_email = [email]
         singup_message = """Welcome to RCCIIT College Forum."""
@@ -83,6 +84,18 @@ def add_info(request):
     if form.is_valid():
         info = form.save(commit=False)
         info.user = request.user
+        role = form.cleaned_data['role']
+        if role == "STUDENT":
+            roll = form.cleaned_data['roll']
+            if roll[0:4] == 'AEIE':
+                    year = roll[4:8]
+            elif roll[0:2] == 'IT':
+                year = roll[2:6]
+            else:
+                year = roll[3:7]
+        else:
+            year = ""
+        info.year = year
         info.save()
         return render(request, 'accounts/profile.html', {'user': request.user})
 
@@ -97,8 +110,9 @@ def edit_info(request):
         if form.is_valid():
             info = form.save(commit=False)
             info.user = request.user
-            info.website = form.cleaned_data['website']
-            info.bio = form.cleaned_data['bio']
+            info.dept = form.cleaned_data['dept']
+            info.role = form.cleaned_data['role']
+            info.roll = form.cleaned_data['roll']
             info.save()
             return render(request, 'accounts/profile.html', {'user': request.user})
     else:

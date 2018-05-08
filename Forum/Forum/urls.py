@@ -14,6 +14,9 @@ urlpatterns = [
     # home/
     url(r'^home/', include('home.urls', namespace='home')),
 
+    # api/postings/
+    url(r'^api/postings/', include('api.urls', namespace='api-postings')),
+
 ]
 
 if settings.DEBUG:

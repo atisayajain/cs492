@@ -8,6 +8,7 @@
         {% if post.photo %}
             <embed src="{{ post.photo.url }}" width="600" height="600">
         {% endif %}
+        <h3>{{ post.dept }} | {{ post.year }}</h3>
         <h3>{{ post.content }}</h3><br>
 
         <hr>
@@ -16,7 +17,7 @@
             <ul>
                 {% for comment in comments %}
                     <li>
-                        {{ comment.user.username}} <small>{{ comment.timestamp|timesince }} ago</small><br>
+                        {{ comment.user.username}} | {{ comment.user.userprofile.dept }}, {{ comment.user.userprofile.year }} <small>{{ comment.timestamp|timesince }} ago</small><br>
                         {{ comment.body }}
                         {% if request.user == comment.user or user.is_superuser %}
                             <a href="{% url 'home:delete-comment' post.id comment.id %}" class="btn btn-sm btn-danger">Delete comment</a>
@@ -26,6 +27,8 @@
                 {% endfor %}
             </ul>
         {% endif %}
+
+        
 
         <a href="{% url 'home:add-comment' post.id %}" class="btn btn-sm btn-default">Add comment</a><br><br><br>
 

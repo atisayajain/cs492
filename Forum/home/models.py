@@ -1,10 +1,21 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-ROLE_CHOICES = (
-		('YEAR', 'Year'),
-		('DEPARTMENT', 'Department'),
-		('ALL', 'All'),
+DEPARTMENT_CHOICES = (
+		('ALL', 'ALL'),
+		('CSE', 'CSE'),
+		('ECE', 'ECE'),
+		('IT', 'IT'),
+		('EE', 'EE'),
+		('AEIE', 'AEIE'),
+	)
+
+YEAR_CHOICES = (
+		('ALL', 'ALL'),
+		('2014', '2014'),
+		('2015', '2015'),
+		('2016', '2016'),
+		('2017', '2017'),
 	)
 
 class Post(models.Model):
@@ -12,7 +23,8 @@ class Post(models.Model):
 	title = models.CharField(max_length=100)
 	photo = models.FileField(blank=True, upload_to='posts')
 	content = models.TextField()
-	privacy = models.CharField(max_length=20, choices=ROLE_CHOICES, default='all')
+	dept = models.CharField(max_length=5, choices=DEPARTMENT_CHOICES, default='ALL')
+	year = models.CharField(max_length=4, choices=YEAR_CHOICES, default='ALL')
 	timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 	time_now = models.DateTimeField(auto_now=True, auto_now_add=False)
 

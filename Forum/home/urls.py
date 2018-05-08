@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from . import views
 
 app_name = 'home'
@@ -28,6 +28,5 @@ urlpatterns = [
 
 	# home/search/
 	url(r'^search$', views.search, name='search'),
-
 
 ]

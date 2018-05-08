@@ -7,19 +7,25 @@ from django.db.models import Q
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
 
-ROLE_CHOICES = (
-    ('Year', 'YEAR'),
-    ('Department', 'DEPARTMENT'),
-    ('All', 'ALL')
-)
 
 def index(request):
-	posts = Post.objects.all()
-	# Login Required
-	if request.user.is_authenticated:
-		return render(request, 'home/index.html', {'posts': posts, 'users': User.objects.all()})
-	else:
-		return render(request, 'accounts/login.html')
+
+    # Login Required
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            posts = Post.objects.all()
+            return render(request, 'home/index.html', {'posts': posts, 'users': User.objects.all()})
+        else:
+            posts_all = Post.objects.filter(dept='ALL')
+            posts_all = posts_all.filter(year='ALL')
+            posts = Post.objects.filter(dept=request.user.userprofile.dept)
+            if request.user.userprofile.dept == "STUDENT":
+                posts = posts.filter(year=request.user.userprofile.year)
+
+	
+        return render(request, 'home/index.html', {'posts_all': posts_all, 'posts': posts, 'users': User.objects.all()})
+    else:
+        return render(request, 'accounts/login.html')
 
 
 def details(request, post_id):
@@ -100,17 +106,20 @@ def delete_comment(request, post_id, comment_id):
 
 
 def search(request):
-    query = request.GET.get("q")
-    users = User.objects.all()
-    users = users.filter(
-            Q(username__icontains=query)
-        ).distinct()
-    posts = Post.objects.all()
-    posts = posts.filter(
-            Q(title__icontains=query)
-        ).distinct()
-    context = {
-        'posts': posts,
-        'users': users,
-    }
-    return render(request, 'home/search.html', context)
+    if request.user.is_authenticated:
+        query = request.GET.get("q")
+        users = User.objects.all()
+        users = users.filter(
+                Q(username__icontains=query)
+            ).distinct()
+        posts = Post.objects.all()
+        posts = posts.filter(
+                Q(title__icontains=query)
+            ).distinct()
+        context = {
+            'posts': posts,
+            'users': users,
+        }
+        return render(request, 'home/search.html', context)
+    else:
+        return render(request, 'accounts/login.html')
