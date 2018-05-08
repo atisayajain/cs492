@@ -9,18 +9,20 @@ from .forms import PostForm, CommentForm
 
 
 def index(request):
-    if request.user.is_superuser:
-        posts = Post.objects.all()
-        return render(request, 'home/index.html', {'posts': posts, 'users': User.objects.all()})
-    else:
-        posts_all = Post.objects.filter(dept='ALL')
-        posts_all = posts_all.filter(year='ALL')
-        posts = Post.objects.filter(dept=request.user.userprofile.dept)
-        if request.user.userprofile.dept == "STUDENT":
-            posts = posts.filter(year=request.user.userprofile.year)
 
-	# Login Required
+    # Login Required
     if request.user.is_authenticated:
+        if request.user.is_superuser:
+            posts = Post.objects.all()
+            return render(request, 'home/index.html', {'posts': posts, 'users': User.objects.all()})
+        else:
+            posts_all = Post.objects.filter(dept='ALL')
+            posts_all = posts_all.filter(year='ALL')
+            posts = Post.objects.filter(dept=request.user.userprofile.dept)
+            if request.user.userprofile.dept == "STUDENT":
+                posts = posts.filter(year=request.user.userprofile.year)
+
+	
         return render(request, 'home/index.html', {'posts_all': posts_all, 'posts': posts, 'users': User.objects.all()})
     else:
         return render(request, 'accounts/login.html')

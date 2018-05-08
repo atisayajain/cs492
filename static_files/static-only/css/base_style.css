@@ -1,5 +1,6 @@
 body {
-	color: red;
+	color: black;
+	background: linear-gradient(to right, blue, skyblue);
 }
 
 #footer {
@@ -7,7 +8,18 @@ body {
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: red;
+    background-color: black;
     color: white;
     text-align: center;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+a:hover {
+	text-decoration: none;
+	opacity: 0.9;
+	color: black;
 }
